@@ -2,7 +2,7 @@
 import { galleryItems } from './gallery-items';
 // Change code below this line
 
-import SimpleLightbox from "simplelightbox"
+import SimpleLightbox from "simplelightbox";
 
 import "simplelightbox/dist/simple-lightbox.min.css";
 
@@ -13,22 +13,27 @@ console.log(generalDiv)
 
 function casePictures (galleryItems) {
     return galleryItems.map(({original,description,preview}) => {
-     return `<div class="gallery__item">
-     <a class="gallery__link" href="large-image.jpg">
+     return `
+     <a class="gallery__link" href="${original}">
        <img
          class="gallery__image"
          src="${preview}"
          data-source="${original}"
          alt="${description}"
        />
-     </a>
-   </div`   
+     </a>`   
     }).join("");
 }
 
+
+
+
+
 const generalF = casePictures (galleryItems);
 generalDiv.insertAdjacentHTML("beforeend",generalF)
-
+new SimpleLightbox('.gallery a', {captions: true,
+  captionsData: "alt",
+  captionDelay: 250, });
 // second part
 
 generalDiv.addEventListener("click",clickOnPicture)
@@ -38,5 +43,5 @@ evt.preventDefault();
  if (evt.target.nodeName !== "IMG") {
     return;
  }    
- new SimpleLightbox('.gallery a', {casePictures: "alt",captioDelay: 250, });
+
 }
