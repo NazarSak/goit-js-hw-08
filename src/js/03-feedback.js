@@ -1,41 +1,130 @@
-import lodash from "lodash.throttle"
 
+// Знизу є другий код підкажіть будь ласка в чому там помилками бо  вмене висвічує ерор
 
-const form = document.querySelector(".feedback-form");
-const input = document.querySelector(".email");
-const message = document.querySelector(".message")
+import throttle from "lodash.throttle";
 
-form.addEventListener("input",inputForm)
+const STORAGE_KEY = 'feedback-form-state';
+let formData = {};
 
-form.addEventListener("submit",submitForm)
+const refs = {
+    form: document.querySelector('.feedback-form'),
+    input: document.querySelector('.feedback-form  input'),
+    textarea: document.querySelector('.feedback-form  textarea'),
+};
 
-// 
+refs.form.addEventListener('input', throttle(storageFormData, 500));
+refs.form.addEventListener('submit', onFormSubmit);
 
-function inputForm (evt) {
-formData[evt.target.name] = evt.target.value.trim();
-localStorage.setItem("feedback-form-state",JSON.stringify(FormData));    
+reloadPage();
+
+function storageFormData(e) {
+    formData[e.target.name] = e.target.value.trim();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+}
+
+function onFormSubmit(e) {
+    e.preventDefault();
+
+    // if (refs.input.value === "" || refs.textarea.value === "") {
+    //     return alert(Please fill in all the fields!);
+    // }
+
+    const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    console.log(savedData);
+
+    e.currentTarget.reset();
+    localStorage.removeItem(STORAGE_KEY);
+    formData = {};
+}
+
+function reloadPage() {
+    // formData = { email: '', message: '' };
+    const savedValues = localStorage.getItem(STORAGE_KEY);
+
+    if (savedValues) {
+        formData = JSON.parse(savedValues);
+        console.log(formData);
+        // Object.assign(formData, JSON.parse(savedValues));
+        refs.input.value = formData.email;
+        refs.textarea.value = formData.message;
+    }
 }
 
 
-function submitForm (evt) {
-    evt.preventDefault()
 
-  const parseData = JSON.parse(localStorage.getItem("feedback-form-state"));
 
-  evt.currentTarget.reset()
 
-  localStorage.removeItem("feedback-form-state");
-  formData = {};
-}
 
-function reloadPAge () {
-   const savedlocal =  localStorage.getItem("feedback-form-state")
-   if (savedValues) {
-    formData = JSON.parse(savedlocal);
-    console.log(formData);
-    input.value = formData.email;
-    textarea.value = formData.message;
-}
 
-}
+
+
+
+// import throttle from "lodash.throttle";
+
+
+
+// const form = document.querySelector(".feedback-form");
+// const input = document.querySelector(".email");
+// const textarea = document.querySelector(".message")
+
+
+// const STORAGE_KEY = "feedback-form"
+
+// let formData = {};
+
+
+// form.addEventListener("input",  throttle(storageFormData,500));
+
+// form.addEventListener("submit",submitForm)
+
+// populateTextarea ()
+
+
+// function storageFormData(evt) {
+//     formData[evt.target.name] = evt.target.value.trim();
+//     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+// }
+
+// function submitForm (evt) {
+//     evt.preventDefault();
+//   const saveData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+// console.log(saveData)
+// evt.currentTarget.reset();
+// localStorage.removeItem(STORAGE_KEY)
+// formData = {};
+// }
+
+// function populateTextarea () {
+//  const savemessage = localStorage.getItem(STORAGE_KEY) ;
+
+//  if (savemessage) {
+//    formData = JSON.parse(savemessage);
+//    input.value = formData.email;
+//    textarea.value = formData.message;
+// }
+//  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
