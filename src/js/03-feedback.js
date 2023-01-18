@@ -54,7 +54,7 @@ function reloadPage() {
         // Object.assign(formData, JSON.parse(savedValues));
         refs.input.value = formData.email;
         refs.textarea.value = formData.message;
-   
+    }
 
     }
 
